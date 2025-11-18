@@ -273,36 +273,51 @@ info:
       </thead>
       <tbody>
       <tr>
-        <td>Course</td>
-        <td>COURSE001</td>
-        <td>Course Name is required</td>
+        <td>users</td>
+        <td>USER001</td>
+        <td>user_id is required</td>
       </tr>
       <tr>
-        <td>Course</td>
-        <td>COURSE002</td>
-        <td>Course Code is required</td>
+        <td>users</td>
+        <td>USER002</td>
+        <td>All fields are required</td>
+      </tr>
+      <tr>
+        <td>users</td>
+        <td>USER003</td>
+        <td>Phone_number already exists</td>
+      </tr>
+      <tr>
+        <td>users</td>
+        <td>USER004</td>
+        <td>email already exists</td>
+      </tr>
+      <tr>
+        <td>users</td>
+        <td>USER005</td>
+        <td>Invalid role!</td>
       </tr>
       
       <tr>
-        <td>Student</td>
-        <td>STUDENT001</td>
-        <td>Roll Number required</td>
+        <td>doctors</td>
+        <td>DOC001</td>
+        <td>doc_id is required</td>
       </tr>
       <tr>
-        <td>Student</td>
-        <td>STUDENT002</td>
-        <td>First Name is required</td>
+        <td>doctors</td>
+        <td>DOC002</td>
+        <td>All fields are required</td>
       </tr>
       <tr>
-        <td>Enrollment</td>
-        <td>ENROLLMENT001</td>
-        <td>Course does not exist</td>
-      </tr>
+        <td>doctors</td>
+        <td>DOC003</td>
+        <td>Duplicate mediacal_lisence_no.</td>
+      </tr> 
       <tr>
-        <td>Enrollment</td>
-        <td>ENROLLMENT002</td>
-        <td>Student does not exist.</td>
-      </tr>  
+        <td>departments</td>
+        <td>DEPT001</td>
+        <td>Department does not exist</td>
+      </tr> 
     </tbody>
     </table>
   
@@ -353,6 +368,9 @@ paths:
                     example: ajyouti100@gmail.com
                   gender:
                     type: string
+                    enum:
+                      - M
+                      - F
                     example: 'M'
                   birth_date:
                     type: string
@@ -360,6 +378,10 @@ paths:
                     example: "2025-10-28"
                   role:
                     type: string
+                    enum:
+                      - PATIENT
+                      - DOCTOR
+                      - ADMIN
                     example: 'PATIENT'
         '500':
           description: Internal Server Error
@@ -398,6 +420,9 @@ paths:
                   example: 'akansh@gmail.com'
                 gender:
                   type: string
+                  enum:
+                    - M
+                    - F
                   example: 'M'
                 birth_date:
                   type: string
@@ -593,7 +618,7 @@ paths:
           required: true
           schema:
             type: string
-            example: HMS20251028-VE8X8
+            example: DOC20251022-QF7WB
       responses:
         '200':
           description: Request Successful
@@ -608,7 +633,7 @@ paths:
                     properties:
                       user_id:     
                         type: string 
-                        example: HMS20251028-VE8X8 
+                        example: DOC20251022-QF7WB 
                       first_name:  
                         type: string
                         example: Akansh
@@ -675,7 +700,7 @@ paths:
           required: true
           schema:
             type: string
-            example: HMS20251028-VE8X8
+            example: DOC20251022-QF7WB
       requestBody:
         content:
           application/json:
@@ -687,7 +712,7 @@ paths:
                   properties:
                     first_name:
                       type: string
-                      example: Akansh
+                      example: Shadow
                     last_name:
                       type: string
                       example: Kumar
@@ -750,7 +775,7 @@ paths:
                         example: Kumar
                       phone_number:
                         type: string
-                        example: '5555555555'
+                        example: '1231231231'
                       email:
                         type: string
                         example: 'akansh@gmail.com'
@@ -900,7 +925,7 @@ paths:
                     properties:
                       user_id:     
                         type: string 
-                        example: HMS20251028-VE8X8 
+                        example: DOC20251022-QF7WB 
                       first_name:  
                         type: string
                         example: Akansh
@@ -965,4 +990,3 @@ paths:
                     type: string
                   error_message:
                     type: string
-
