@@ -1,0 +1,968 @@
+openapi: 3.0.0
+info:
+  title: Hospital Management System Problem Statement
+  description: >
+    <div>You are required to build a Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
+    <h3><strong> Pakages Used: </strong></h3>
+    <ol> 
+      <li>Flask</li>
+      <li>Flask-Sqlalchemy</li>
+      <li>Flask-Restful</li>
+      <li>Flask-Login</li>
+      <li>python-dotenv</li>
+      <li>Flask-Migrate</li> 
+    </ol>
+    </div>
+    <br>
+    <h2><strong> users Table Schema </strong></h2> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>user_id</td>
+        <td>String</td>
+        <td>Primary Key</td>
+      </tr>
+      <tr>
+        <td>first_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>last_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>role</td>
+        <td>String</td>
+        <td>"PATIENT" or "DOCTOR" or "ADMIN", Not Null</td>
+      </tr>
+      <tr>
+        <td>phone_number</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>gender</td>
+        <td>String</td>
+        <td>"M" or "F", Not Null</td>
+      </tr>
+      <tr>
+        <td>birth_date</td>
+        <td>Date</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>String</td>
+        <td>"OK" or "BANNED", Not Null</td>
+      </tr>         
+    </tbody>
+    </table>
+    <br>
+    <h3><strong> doctors Table Schema </strong></h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>doc_id</td>
+        <td>String</td>
+        <td>Primary Key, Foreign Key (users.user_id)</td>
+      </tr>
+      <tr>
+        <td>dept_id</td>
+        <td>String</td>
+        <td>Foreign Key (departments.dept_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>qualificaton</td>
+        <td>Text</td>
+        <td>Not Null</td>
+      </tr>      
+      <tr>
+        <td>medical_lisence_no</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>Text</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+
+    <br>
+    <h3><strong> appointments Table Schema </strong></h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>appointment_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>doc_id</td>
+        <td>String</td>
+        <td>Foreign Key (doctors.doc_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>patient_id</td>
+        <td>String</td>
+        <td>Foreign Key (users.user_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>appoint_date</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>issued date</td>
+        <td>DateTime</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>String</td>
+        <td>"Booked" or "Completed" or "Cancelled", Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <br>
+    <h3><strong> treatments Table Schema </strong></h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>appointment_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Foreign Key (appointments.appointment_id)</td>
+      </tr>
+      <tr>
+        <td>visit_type</td>
+        <td>String</td>
+        <td>"CONSULTATION" or "FOLLOW_UP" or "EMERGENCY", Not Null</td>
+      </tr>
+      <tr>
+        <td>visit_no</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>diagnosis</td>
+        <td>Text</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>prescription</td>
+        <td>Text</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>test_done</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <br>
+    <h3><strong> departments Table Schema </strong></h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>dept_id</td>
+        <td>String</td>
+        <td>Primary Key</td>
+      </tr>
+      <tr>
+        <td>dept_name</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>Text</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>doctors_registered</td>
+        <td>Integer</td>
+        <td>Not Null</td>
+    </tbody>
+    </table>
+    
+    <br>
+    <h3><strong> availability Table Schema </strong></h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>String</td>
+        <td>Primary Key</td>
+      </tr>
+      <tr>
+        <td>doc_id</td>
+        <td>String</td>
+        <td>Foreign Key (doctors.doc_id), Not Null</td>
+      </tr>
+      <tr>
+        <td>date</td>
+        <td>Date</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>first_shift</td>
+        <td>Boolean</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>second_shift</td>
+        <td>Boolean</td>
+        <td>Not Null</td>
+      </tr>
+    </tbody>
+    </table>
+    
+    <br>
+    <h3><strong> Error Codes </strong></h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Course</td>
+        <td>COURSE001</td>
+        <td>Course Name is required</td>
+      </tr>
+      <tr>
+        <td>Course</td>
+        <td>COURSE002</td>
+        <td>Course Code is required</td>
+      </tr>
+      
+      <tr>
+        <td>Student</td>
+        <td>STUDENT001</td>
+        <td>Roll Number required</td>
+      </tr>
+      <tr>
+        <td>Student</td>
+        <td>STUDENT002</td>
+        <td>First Name is required</td>
+      </tr>
+      <tr>
+        <td>Enrollment</td>
+        <td>ENROLLMENT001</td>
+        <td>Course does not exist</td>
+      </tr>
+      <tr>
+        <td>Enrollment</td>
+        <td>ENROLLMENT002</td>
+        <td>Student does not exist.</td>
+      </tr>  
+    </tbody>
+    </table>
+  
+  contact: 
+    email: 23f1002616@ds.study.iitm.ac.in
+
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8080
+paths:
+  /api/user/{user_id}:
+    description: End point to read, update and delete a course resource with course_id = courseId.
+    get:
+      tags:
+        - user
+      operationId: readUserId
+      description: Operation to Read user resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    example: HMS20251028-VE8X8
+                  first_name:
+                    type: string
+                    example: Anjan
+                  last_name:
+                    type: string
+                    example: Sharma
+                  phone_number:
+                    type: string
+                    example: '4444444444'
+                  email:
+                    type: string
+                    example: ajyouti100@gmail.com
+                  gender:
+                    type: string
+                    example: 'M'
+                  birth_date:
+                    type: string
+                    format: date
+                    example: "2025-10-28"
+                  role:
+                    type: string
+                    example: 'PATIENT'
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Course not found
+
+    put:
+      tags:
+        - user
+      operationId: updateUser
+      description: Operation to update the user resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  example: Akansh
+                last_name:
+                  type: string
+                  example: Kumar
+                phone_number:
+                  type: string
+                  example: '1231231231'
+                email:
+                  type: string
+                  example: 'akansh@gmail.com'
+                gender:
+                  type: string
+                  example: 'M'
+                birth_date:
+                  type: string
+                  format: date
+                  example: "1996-12-12"
+                role:
+                  type: string
+                  enum: 
+                  - PATIENT 
+                  - DOCTOR
+                  - ADMIN
+                  example: PATIENT
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    example: HMS20251028-VE8X8
+                  first_name:
+                    type: string
+                    example: Akansh
+                  last_name:
+                    type: string
+                    example: Kumar
+                  phone_number:
+                    type: string
+                    example: '1231231231'
+                  email:
+                    type: string
+                    example: 'akansh@gmail.com'
+                  gender:
+                    type: string
+                    enum:
+                      - M
+                      - F
+                    example: 'M'
+                  birth_date:
+                    type: string
+                    format: date
+                    example: "1996-12-12"
+                  role:
+                    type: string
+                    enum: 
+                    - PATIENT 
+                    - DOCTOR
+                    - ADMIN
+                    example: PATIENT
+        '404':
+          description: Course not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+    delete:
+      tags:
+        - user
+      operationId: deleteUser
+      description: Operation to delete the user resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: Course not found
+        '500':
+          description: Intenal Server Error
+
+  /api/user:
+    description: End point to create user resource
+    post:
+      tags:
+        - user
+      operationId: createUser
+      description: Operation to create the user resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  first_name:
+                    type: string
+                    example: Anjan
+                  last_name:
+                    type: string
+                    example: Sharma
+                  password:
+                    type: string
+                    example: password@1
+                  phone_number:
+                    type: string
+                    example: '4444444444'
+                  email:
+                    type: string
+                    example: 'ajyoti100@gmail.com'
+                  gender:
+                    type: string
+                    example: 'M'
+                  birth_date:
+                    type: string
+                    format: date
+                    example: "2025-10-28"
+                  role:
+                    type: string
+                    enum: 
+                    - PATIENT 
+                    - DOCTOR
+                    - ADMIN
+                    example: PATIENT
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    example: HMS20251028-VE8X8
+                  first_name:
+                    type: string
+                    example: Anjan
+                  last_name:
+                    type: string
+                    example: Sharma
+                  phone_number:
+                    type: string
+                    example: '4444444444'
+                  email:
+                    type: string
+                    example: 'ajyoti100@gmail.com'
+                  gender:
+                    type: string
+                    example: 'M'
+                  birth_date:
+                    type: string
+                    format: date
+                    example: "2025-10-28"
+                  role:
+                    type: string
+                    enum: 
+                    - PATIENT 
+                    - DOCTOR
+                    - ADMIN
+                    example: PATIENT
+        '409':
+          description: course_code already exist
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/doctor/{doc_id}:
+    description: Url to read, update and delete the doctor resource.
+    get:
+      tags:
+        - doctor
+      operationId: getDoctor
+      description: Operation to read doctor resource
+      parameters:
+        - in: path
+          name: doc_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: doctor object
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      user_id:     
+                        type: string 
+                        example: HMS20251028-VE8X8 
+                      first_name:  
+                        type: string
+                        example: Akansh
+                      last_name:   
+                        type: string
+                        example: kumar
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
+                      phone_number:   
+                        type: string
+                        example: '9999999999'
+                      gender:      
+                        type: string
+                        enum:
+                          - M
+                          - F
+                        example: M
+                      birth_date:  
+                        type: string 
+                        format: date
+                        example: "1996-12-12"
+                      role:       
+                        type: string
+                        enum: 
+                        - PATIENT 
+                        - DOCTOR 
+                        - ADMIN
+                        example:  DOCTOR
+                  doctor:
+                    type: object
+                    properties:
+                      doc_id:            
+                        type: string 
+                        example: HMS20251028-VE8X8
+                      dept_id:           
+                        type: string 
+                        example: CAR
+                      qualification:     
+                        type: string
+                        format: text
+                        example: MBBS, MD - Derma
+                      medical_license_no: 
+                        type: string
+                        example: ADM1002545
+                      description:       
+                        type: string
+                        format: text
+                        example: Experienced medical professional providing high-quality patient care.
+                      
+        '500':
+          description: Internal server error
+        '404':
+          description: Student not found
+
+    put:
+      tags:
+        - doctor
+      operationId: updateDoctor
+      description: Operation to update the doctor resource
+      parameters:
+        - in: path
+          name: doc_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user: 
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                      example: Akansh
+                    last_name:
+                      type: string
+                      example: Kumar
+                    phone_number:
+                      type: string
+                      example: '1231231231'
+                    email:
+                      type: string
+                      example: 'akansh@gmail.com'
+                    gender:
+                      type: string
+                      example: 'M'
+                    birth_date:
+                      type: string
+                      format: date
+                      example: "1996-12-12"
+                    role:
+                      type: string
+                      enum: 
+                      - PATIENT 
+                      - DOCTOR
+                      - ADMIN
+                      example: PATIENT
+                doctor:
+                    type: object
+                    properties:
+                      dept_id:           
+                        type: string 
+                        example: CAR
+                      qualification:     
+                        type: string
+                        format: text
+                        example: MBBS, MD - Derma
+                      medical_license_no: 
+                        type: string
+                        example: ADM1002545
+                      description:       
+                        type: string
+                        format: text
+                        example: Experienced medical professional providing high-quality patient care. 
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties: 
+                      user_id:
+                        type: string
+                        example: HMS20251028-VE8X8
+                      first_name:
+                        type: string
+                        example: Shadow
+                      last_name:
+                        type: string
+                        example: Kumar
+                      phone_number:
+                        type: string
+                        example: '5555555555'
+                      email:
+                        type: string
+                        example: 'akansh@gmail.com'
+                      gender:
+                        type: string
+                        enum:
+                          - M
+                          - F
+                        example: 'M'
+                      birth_date:
+                        type: string
+                        format: date
+                        example: "1996-12-12"
+                      role:
+                        type: string
+                        enum: 
+                        - PATIENT 
+                        - DOCTOR
+                        - ADMIN
+                        example: PATIENT
+                  doctor:
+                    type: object
+                    properties:
+                      dept_id:           
+                        type: string 
+                        example: CAR
+                      qualification:     
+                        type: string
+                        format: text
+                        example: MBBS, MD - Derma
+                      medical_license_no: 
+                        type: string
+                        example: ADM1002545
+                      description:       
+                        type: string
+                        format: text
+                        example: Experienced medical professional providing high-quality patient care.  
+
+        '404':
+          description: Doctor not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+    delete:
+      tags:
+        - doctor
+      operationId: deleteDoctor
+      description: Operation to delete the course resource
+      parameters:
+        - in: path
+          name: doc_id
+          required: true
+          schema:
+            type: string
+            example: HMS20251028-VE8X8
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Student not found
+
+  /api/doctor:
+    description: Url to create doctor resource
+    post:
+      tags:
+        - doctor
+      operationId: createDoctor
+      description: Operation to create the doctor resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                    type: object
+                    properties:
+                      first_name:  
+                        type: string
+                        example: Akansh
+                      last_name:   
+                        type: string
+                        example: kumar
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
+                      phone_number:   
+                        type: string
+                        example: '9999999999'
+                      gender:      
+                        type: string
+                        enum:
+                          - M
+                          - F
+                        example: M
+                      birth_date:  
+                        type: string 
+                        format: date
+                        example: "1996-12-12"
+                      role:       
+                        type: string
+                        enum: 
+                        - PATIENT 
+                        - DOCTOR 
+                        - ADMIN
+                        example:  DOCTOR
+                doctor:
+                    type: object
+                    properties:
+                      dept_id:           
+                        type: string 
+                        example: CAR
+                      qualification:     
+                        type: string
+                        format: text
+                        example: MBBS, MD - Derma
+                      medical_license_no: 
+                        type: string
+                        example: ADM1002545
+                      description:       
+                        type: string
+                        format: text
+                        example: Experienced medical professional providing high-quality patient care.
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: student object
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      user_id:     
+                        type: string 
+                        example: HMS20251028-VE8X8 
+                      first_name:  
+                        type: string
+                        example: Akansh
+                      last_name:   
+                        type: string
+                        example: kumar
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
+                      phone_number:   
+                        type: string
+                        example: '9999999999'
+                      gender:      
+                        type: string
+                        enum:
+                          - M
+                          - F
+                        example: M
+                      birth_date:  
+                        type: string 
+                        format: date
+                        example: "1996-12-12"
+                      role:       
+                        type: string
+                        enum: 
+                        - PATIENT 
+                        - DOCTOR 
+                        - ADMIN
+                        example:  DOCTOR
+                  doctor:
+                    type: object
+                    properties:
+                      doc_id:            
+                        type: string 
+                        example: HMS20251028-VE8X8
+                      dept_id:           
+                        type: string 
+                        example: CAR
+                      qualification:     
+                        type: string
+                        format: text
+                        example: MBBS, MD - Derma
+                      medical_license_no: 
+                        type: string
+                        example: ADM1002545
+                      description:       
+                        type: string
+                        format: text
+                        example: Experienced medical professional providing high-quality patient care.
+        '409':
+          description: Student already exist
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+
