@@ -275,42 +275,32 @@ info:
       <tr>
         <td>users</td>
         <td>USER001</td>
-        <td>user_id is required</td>
-      </tr>
-      <tr>
-        <td>users</td>
-        <td>USER002</td>
         <td>All fields are required</td>
       </tr>
       <tr>
         <td>users</td>
-        <td>USER003</td>
+        <td>USER002</td>
         <td>Phone_number already exists</td>
       </tr>
       <tr>
         <td>users</td>
-        <td>USER004</td>
+        <td>USER003</td>
         <td>email already exists</td>
       </tr>
       <tr>
         <td>users</td>
-        <td>USER005</td>
+        <td>USER004</td>
         <td>Invalid role!</td>
       </tr>
       
       <tr>
         <td>doctors</td>
         <td>DOC001</td>
-        <td>doc_id is required</td>
-      </tr>
-      <tr>
-        <td>doctors</td>
-        <td>DOC002</td>
         <td>All fields are required</td>
       </tr>
       <tr>
         <td>doctors</td>
-        <td>DOC003</td>
+        <td>DOC002</td>
         <td>Duplicate mediacal_lisence_no.</td>
       </tr> 
       <tr>
@@ -386,7 +376,7 @@ paths:
         '500':
           description: Internal Server Error
         '404':
-          description: Course not found
+          description: User not found
 
     put:
       tags:
@@ -476,7 +466,7 @@ paths:
                     - ADMIN
                     example: PATIENT
         '404':
-          description: Course not found
+          description: User not found
         '500':
           description: Internal Server Error
         '400':
@@ -506,7 +496,7 @@ paths:
         '200':
           description: Successfully Deleted
         '404':
-          description: Course not found
+          description: User not found
         '500':
           description: Intenal Server Error
 
@@ -590,8 +580,6 @@ paths:
                     - DOCTOR
                     - ADMIN
                     example: PATIENT
-        '409':
-          description: course_code already exist
         '500':
           description: Internal Server Error
         '400':
@@ -687,7 +675,7 @@ paths:
         '500':
           description: Internal server error
         '404':
-          description: Student not found
+          description: Doctor not found
 
     put:
       tags:
@@ -975,8 +963,6 @@ paths:
                         type: string
                         format: text
                         example: Experienced medical professional providing high-quality patient care.
-        '409':
-          description: Student already exist
         '500':
           description: Internal Server Error
         '400':
