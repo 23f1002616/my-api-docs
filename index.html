@@ -2,15 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>API Documentation</title>
-    <link rel="shortcut icon" href="#">
-    <style>
-      body { margin: 0; padding: 0; }
-      redoc { display: block; height: 100vh; }
-    </style>
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
   </head>
+
   <body>
-    <redoc spec-url="HMS_API.yaml"></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"></script>
+    <div id="swagger-ui"></div>
+
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+    <script>
+      window.onload = function () {
+        SwaggerUIBundle({
+          url: "openapi.yaml",   // your OpenAPI file
+          dom_id: "#swagger-ui"
+        });
+      };
+    </script>
   </body>
 </html>
