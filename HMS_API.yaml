@@ -599,7 +599,7 @@ paths:
       tags:
         - doctor
       operationId: getDoctor
-      description: Operation to read doctor resource
+      description: Operation to read Doctor resource
       parameters:
         - in: path
           name: doc_id
@@ -681,7 +681,7 @@ paths:
       tags:
         - doctor
       operationId: updateDoctor
-      description: Operation to update the doctor resource
+      description: Operation to update the Doctor resource
       parameters:
         - in: path
           name: doc_id
@@ -821,7 +821,7 @@ paths:
       tags:
         - doctor
       operationId: deleteDoctor
-      description: Operation to delete the course resource
+      description: Operation to delete the Doctor resource
       parameters:
         - in: path
           name: doc_id
@@ -843,7 +843,7 @@ paths:
       tags:
         - doctor
       operationId: createDoctor
-      description: Operation to create the doctor resource
+      description: Operation to create the Doctor resource
       requestBody:
         content:
           application/json:
@@ -963,6 +963,243 @@ paths:
                         type: string
                         format: text
                         example: Experienced medical professional providing high-quality patient care.
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  
+  /api/appointment/{appointment_id}:
+    description: url to read, update, delete the appointment resource.
+    get:
+      description: To get the Appointment Resource.
+      tags:
+        - appointment
+      operationId: getAppointment
+      parameters:
+      - in: path
+        name: appointment_id
+        required: true
+        schema:  
+          type: integer
+          example: 6
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: Appointment object
+                type: object
+                properties:
+                  appointment_id:
+                    type: integer
+                    example: 6
+                  doc_id:
+                    type: string
+                    example: DOC20251022-QF7WB
+                  patient_id:
+                    type: string
+                    example: HMS20251028-VE8X8
+                  appoint_date:
+                    type: string
+                    format: datetime
+                    example: "2025-11-17 08:30:00"
+                  issued_date:
+                    type: string
+                    format: datetime
+                    example: "2025-11-15 23:23:12"
+                  status:
+                    type: string
+                    enum:
+                      - Booked
+                      - Completed
+                      - Cancelled
+                    example: Booked
+    delete:
+      tags:
+        - appointment
+      operationId: deleteAppointment
+      description: Operation to delete the Appointment resource
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: integer
+            example: 6
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Student not found           
+    put:
+      tags:
+        - appointment
+      operationId: updateAppointment
+      description: Operation to update the Appointment resource
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: integer
+            example: 6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                doc_id:
+                   type: string
+                   example: DOC20251022-QF7WB
+                patient_id:
+                   type: string
+                   example: HMS20251028-VE8X8
+                appoint_date:
+                   type: string
+                   format: datetime
+                   example: "2025-11-17 08:30:00"
+                issued_date:
+                   type: string
+                   format: datetime
+                   example: "2025-11-15 23:23:12"
+                status:
+                   type: string
+                   enum:
+                     - Booked
+                     - Completed
+                     - Cancelled
+                   example: Cancelled 
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appointment_id:
+                     type: integer
+                     example: 6
+                  doc_id:
+                     type: string
+                     example: DOC20251022-QF7WB
+                  patient_id:
+                     type: string
+                     example: HMS20251028-VE8X8
+                  appoint_date:
+                     type: string
+                     format: datetime
+                     example: "2025-11-17 08:30:00"
+                  issued_date:
+                     type: string
+                     format: datetime
+                     example: "2025-11-15 23:23:12"
+                  status:
+                     type: string
+                     enum:
+                       - Booked
+                       - Completed
+                       - Cancelled
+                     example: Cancelled   
+
+        '404':
+          description: Doctor not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  
+  /api/appointment:
+    description: url to create Appointment resource
+    post:
+     tags:
+       - appointment
+     operationId: createAppointment
+     description: Operation to create the Appointment resource
+     requestBody:
+       content:
+         application/json:
+           schema:
+             type: object
+             properties:
+                doc_id:
+                   type: string
+                   example: DOC20251022-QF7WB
+                patient_id:
+                   type: string
+                   example: HMS20251028-VE8X8
+                appoint_date:
+                   type: string
+                   format: datetime
+                   example: "2025-11-17 08:30:00"
+                issued_date:
+                   type: string
+                   format: datetime
+                   example: "2025-11-15 23:23:12"
+                status:
+                   type: string
+                   enum:
+                     - Booked
+                     - Completed
+                     - Cancelled
+                   example: Booked 
+     responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appointment_id:
+                     type: integer
+                     example: 6
+                  doc_id:
+                     type: string
+                     example: DOC20251022-QF7WB
+                  patient_id:
+                     type: string
+                     example: HMS20251028-VE8X8
+                  appoint_date:
+                     type: string
+                     format: datetime
+                     example: "2025-11-17 08:30:00"
+                  issued_date:
+                     type: string
+                     format: datetime
+                     example: "2025-11-15 23:23:12"
+                  status:
+                     type: string
+                     enum:
+                       - Booked
+                       - Completed
+                       - Cancelled
+                     example: Booked   
+
+        '404':
+          description: Doctor not found
         '500':
           description: Internal Server Error
         '400':
