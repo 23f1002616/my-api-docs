@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Hospital Management System Problem Statement
   description: >
-    <div>I am required to build a Flasked based Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
+    <div>I am required to build a Flask based Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
     <h3><strong> Pakages Used: </strong></h3>
     <ol> 
       <li>Flask</li>
@@ -280,12 +280,12 @@ info:
       <tr>
         <td>users</td>
         <td>USER002</td>
-        <td>Phone_number already exists</td>
+        <td>Duplicate phone_number</td>
       </tr>
       <tr>
         <td>users</td>
         <td>USER003</td>
-        <td>email already exists</td>
+        <td>Duplicate email</td>
       </tr>
       <tr>
         <td>users</td>
@@ -306,8 +306,23 @@ info:
       <tr>
         <td>departments</td>
         <td>DEPT001</td>
-        <td>Department does not exist</td>
-      </tr> 
+        <td>Department does not exists</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT001</td>
+        <td>doc_id is required</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT002</td>
+        <td>patient_id is required</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT003</td>
+        <td>Duplicate appointment</td>
+      </tr>
     </tbody>
     </table>
   
@@ -319,7 +334,7 @@ servers:
   - url: http://127.0.0.1:8080
 paths:
   /api/user/{user_id}:
-    description: End point to read, update and delete a course resource with course_id = courseId.
+    description: End point to read, update and delete a User resource.
     get:
       tags:
         - user
