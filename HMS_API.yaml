@@ -292,6 +292,11 @@ info:
         <td>USER004</td>
         <td>Invalid role!</td>
       </tr>
+      <tr>
+        <td>users</td>
+        <td>USER005</td>
+        <td>Invalid status!</td>
+      </tr>
       
       <tr>
         <td>doctors</td>
@@ -301,7 +306,7 @@ info:
       <tr>
         <td>doctors</td>
         <td>DOC002</td>
-        <td>Duplicate mediacal_lisence_no.</td>
+        <td>Duplicate medical_lisence_no</td>
       </tr> 
       <tr>
         <td>departments</td>
@@ -311,17 +316,32 @@ info:
       <tr>
         <td>appointments</td>
         <td>APPOINT001</td>
-        <td>doc_id is required</td>
+        <td>All fields are required</td>
       </tr>
       <tr>
         <td>appointments</td>
         <td>APPOINT002</td>
-        <td>patient_id is required</td>
+        <td>doc_id not found</td>
       </tr>
       <tr>
         <td>appointments</td>
         <td>APPOINT003</td>
-        <td>Duplicate appointment</td>
+        <td>patient_id not found</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT004</td>
+        <td>Invalid status!</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT005</td>
+        <td>Another appointment exists at the same time</td>
+      </tr>
+      <tr>
+        <td>appointments</td>
+        <td>APPOINT006</td>
+        <td>All appointments are booked</td>
       </tr>
     </tbody>
     </table>
@@ -388,6 +408,13 @@ paths:
                       - DOCTOR
                       - ADMIN
                     example: 'PATIENT'
+                  status:
+                    type: string
+                    enum: 
+                     - OK 
+                     - BANNED
+                    description: "User account status (admin-only)"
+                    example: OK
         '500':
           description: Internal Server Error
         '404':
@@ -440,6 +467,13 @@ paths:
                   - DOCTOR
                   - ADMIN
                   example: PATIENT
+                status:
+                    type: string
+                    enum: 
+                     - OK 
+                     - BANNED
+                    description: "User account status (admin-only)"
+                    example: OK
       responses:
         '200':
           description: Successfuly updated
@@ -480,6 +514,13 @@ paths:
                     - DOCTOR
                     - ADMIN
                     example: PATIENT
+                  status:
+                    type: string
+                    enum: 
+                     - OK 
+                     - BANNED
+                    description: "User account status (admin-only)"
+                    example: OK
         '404':
           description: User not found
         '500':
@@ -529,34 +570,41 @@ paths:
               type: object
               properties:
                   first_name:
-                    type: string
-                    example: Anjan
+                     type: string
+                     example: Anjan
                   last_name:
-                    type: string
-                    example: Sharma
+                     type: string
+                     example: Sharma
                   password:
-                    type: string
-                    example: password@1
+                     type: string
+                     example: password@1
                   phone_number:
-                    type: string
-                    example: '4444444444'
+                     type: string
+                     example: '4444444444'
                   email:
-                    type: string
-                    example: 'ajyoti100@gmail.com'
+                     type: string
+                     example: 'ajyoti100@gmail.com'
                   gender:
-                    type: string
-                    example: 'M'
+                     type: string
+                     example: 'M'
                   birth_date:
-                    type: string
-                    format: date
-                    example: "2025-10-28"
+                     type: string
+                     format: date
+                     example: "2025-10-28"
                   role:
+                     type: string
+                     enum: 
+                     - PATIENT 
+                     - DOCTOR
+                     - ADMIN
+                     example: PATIENT
+                  status:
                     type: string
                     enum: 
-                    - PATIENT 
-                    - DOCTOR
-                    - ADMIN
-                    example: PATIENT
+                     - OK 
+                     - BANNED
+                    description: "User account status (admin-only)"
+                    example: OK
       responses:
         '201':
           description: Successfully Created
@@ -566,35 +614,41 @@ paths:
                 title: user object
                 type: object
                 properties:
-                  user_id:
+                  user: 
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        example: HMS20251028-VE8X8
+                      first_name:
+                        type: string
+                        example: Anjan
+                      last_name:
+                        type: string
+                        example: Sharma
+                      phone_number:
+                        type: string
+                        example: '4444444444'
+                      email:
+                        type: string
+                        example: 'ajyoti100@gmail.com'
+                      gender:
+                        type: string
+                        example: 'M'
+                      birth_date:
+                        type: string
+                        format: date
+                        example: "2025-10-28"
+                      role:
+                        type: string
+                        enum: 
+                        - PATIENT 
+                        - DOCTOR
+                        - ADMIN
+                        example: PATIENT
+                  message:
                     type: string
-                    example: HMS20251028-VE8X8
-                  first_name:
-                    type: string
-                    example: Anjan
-                  last_name:
-                    type: string
-                    example: Sharma
-                  phone_number:
-                    type: string
-                    example: '4444444444'
-                  email:
-                    type: string
-                    example: 'ajyoti100@gmail.com'
-                  gender:
-                    type: string
-                    example: 'M'
-                  birth_date:
-                    type: string
-                    format: date
-                    example: "2025-10-28"
-                  role:
-                    type: string
-                    enum: 
-                    - PATIENT 
-                    - DOCTOR
-                    - ADMIN
-                    example: PATIENT
+                    example: An email has been sent to your registered email with your credentials!        
         '500':
           description: Internal Server Error
         '400':
@@ -643,12 +697,12 @@ paths:
                       last_name:   
                         type: string
                         example: kumar
-                      email:       
-                        type: string
-                        example: akanshbharadwaj@gmail.com
                       phone_number:   
                         type: string
                         example: '9999999999'
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
                       gender:      
                         type: string
                         enum:
@@ -665,7 +719,7 @@ paths:
                         - PATIENT 
                         - DOCTOR 
                         - ADMIN
-                        example:  DOCTOR
+                        example: DOCTOR
                   doctor:
                     type: object
                     properties:
@@ -679,7 +733,7 @@ paths:
                         type: string
                         format: text
                         example: MBBS, MD - Derma
-                      medical_license_no: 
+                      medical_lisence_no: 
                         type: string
                         example: ADM1002545
                       description:       
@@ -738,7 +792,14 @@ paths:
                       - PATIENT 
                       - DOCTOR
                       - ADMIN
-                      example: PATIENT
+                      example: DOCTOR
+                    status:
+                      type: string
+                      enum: 
+                       - OK 
+                       - BANNED
+                      description: "User account status (admin-only)"
+                      example: OK
                 doctor:
                     type: object
                     properties:
@@ -749,7 +810,7 @@ paths:
                         type: string
                         format: text
                         example: MBBS, MD - Derma
-                      medical_license_no: 
+                      medical_lisence_no: 
                         type: string
                         example: ADM1002545
                       description:       
@@ -798,7 +859,14 @@ paths:
                         - PATIENT 
                         - DOCTOR
                         - ADMIN
-                        example: PATIENT
+                        example: DOCTOR
+                      status:
+                        type: string
+                        enum: 
+                         - OK 
+                         - BANNED
+                        description: "User account status (admin-only)"
+                        example: OK
                   doctor:
                     type: object
                     properties:
@@ -809,7 +877,7 @@ paths:
                         type: string
                         format: text
                         example: MBBS, MD - Derma
-                      medical_license_no: 
+                      medical_lisence_no: 
                         type: string
                         example: ADM1002545
                       description:       
@@ -850,7 +918,7 @@ paths:
         '500':
           description: Internal Server Error
         '404':
-          description: Student not found
+          description: Doctor not found
 
   /api/doctor:
     description: Url to create doctor resource
@@ -874,12 +942,15 @@ paths:
                       last_name:   
                         type: string
                         example: kumar
-                      email:       
+                      password:
                         type: string
-                        example: akanshbharadwaj@gmail.com
+                        example: password@1
                       phone_number:   
                         type: string
                         example: '9999999999'
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
                       gender:      
                         type: string
                         enum:
@@ -896,7 +967,14 @@ paths:
                         - PATIENT 
                         - DOCTOR 
                         - ADMIN
-                        example:  DOCTOR
+                        example: DOCTOR
+                      status:
+                        type: string
+                        enum: 
+                         - OK 
+                         - BANNED
+                        description: "User account status (admin-only)"
+                        example: OK
                 doctor:
                     type: object
                     properties:
@@ -907,9 +985,9 @@ paths:
                         type: string
                         format: text
                         example: MBBS, MD - Derma
-                      medical_license_no: 
+                      medical_lisence_no: 
                         type: string
-                        example: ADM1002545
+                        example: ADM1002546
                       description:       
                         type: string
                         format: text
@@ -935,12 +1013,12 @@ paths:
                       last_name:   
                         type: string
                         example: kumar
-                      email:       
-                        type: string
-                        example: akanshbharadwaj@gmail.com
                       phone_number:   
                         type: string
                         example: '9999999999'
+                      email:       
+                        type: string
+                        example: akanshbharadwaj@gmail.com
                       gender:      
                         type: string
                         enum:
@@ -957,7 +1035,14 @@ paths:
                         - PATIENT 
                         - DOCTOR 
                         - ADMIN
-                        example:  DOCTOR
+                        example: DOCTOR
+                      status:
+                        type: string
+                        enum: 
+                         - OK 
+                         - BANNED
+                        description: "User account status (admin-only)"
+                        example: OK
                   doctor:
                     type: object
                     properties:
@@ -971,7 +1056,7 @@ paths:
                         type: string
                         format: text
                         example: MBBS, MD - Derma
-                      medical_license_no: 
+                      medical_lisence_no: 
                         type: string
                         example: ADM1002545
                       description:       
@@ -995,7 +1080,7 @@ paths:
   /api/appointment/{appointment_id}:
     description: url to read, update, delete the appointment resource.
     get:
-      description: To get the Appointment Resource.
+      description: Operation to get the Appointment Resource.
       tags:
         - appointment
       operationId: getAppointment
@@ -1027,11 +1112,12 @@ paths:
                   appoint_date:
                     type: string
                     format: datetime
-                    example: "2025-11-17 08:30:00"
+                    example: "2025-11-17 08:30 AM"
                   issued_date:
                     type: string
                     format: datetime
-                    example: "2025-11-15 23:23:12"
+                    description: Stores time in UTC format in default if not supplied
+                    example: "2025-11-15 23:23 PM"
                   status:
                     type: string
                     enum:
@@ -1039,25 +1125,10 @@ paths:
                       - Completed
                       - Cancelled
                     example: Booked
-    delete:
-      tags:
-        - appointment
-      operationId: deleteAppointment
-      description: Operation to delete the Appointment resource
-      parameters:
-        - in: path
-          name: appointment_id
-          required: true
-          schema:
-            type: integer
-            example: 6
-      responses:
-        '200':
-          description: Successfully Deleted
         '500':
           description: Internal Server Error
         '404':
-          description: Student not found           
+          description: Appointment not found          
     put:
       tags:
         - appointment
@@ -1085,11 +1156,12 @@ paths:
                 appoint_date:
                    type: string
                    format: datetime
-                   example: "2025-11-17 08:30:00"
+                   example: "2025-11-17 08:30 AM"
                 issued_date:
                    type: string
                    format: datetime
-                   example: "2025-11-15 23:23:12"
+                   description: Stores time in UTC format in default if not supplied
+                   example: "2025-11-15 07:23 PM"
                 status:
                    type: string
                    enum:
@@ -1098,7 +1170,7 @@ paths:
                      - Cancelled
                    example: Cancelled 
       responses:
-        '200':
+        '201':
           description: Successfuly updated
           content:
             application/json:
@@ -1117,11 +1189,12 @@ paths:
                   appoint_date:
                      type: string
                      format: datetime
-                     example: "2025-11-17 08:30:00"
+                     example: "2025-11-17 08:30 AM"
                   issued_date:
                      type: string
                      format: datetime
-                     example: "2025-11-15 23:23:12"
+                     description: Stores time in UTC format in default if not supplied
+                     example: "2025-11-15 23:23 PM"
                   status:
                      type: string
                      enum:
@@ -1145,6 +1218,25 @@ paths:
                     type: string
                   error_message:
                     type: string
+    delete:
+      tags:
+        - appointment
+      operationId: deleteAppointment
+      description: Operation to delete the Appointment resource
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema:
+            type: integer
+            example: 6
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Appointment not found
   
   /api/appointment:
     description: url to create Appointment resource
@@ -1168,11 +1260,12 @@ paths:
                 appoint_date:
                    type: string
                    format: datetime
-                   example: "2025-11-17 08:30:00"
+                   example: "2025-11-17 08:30 AM"
                 issued_date:
                    type: string
                    format: datetime
-                   example: "2025-11-15 23:23:12"
+                   description: Stores time in UTC format in default if not supplied
+                   example: "2025-11-15 07:23 PM"
                 status:
                    type: string
                    enum:
@@ -1182,7 +1275,7 @@ paths:
                    example: Booked 
      responses:
         '200':
-          description: Successfuly updated
+          description: Successfuly Created
           content:
             application/json:
               schema:
@@ -1200,11 +1293,11 @@ paths:
                   appoint_date:
                      type: string
                      format: datetime
-                     example: "2025-11-17 08:30:00"
+                     example: "2025-11-17 08:30 AM"
                   issued_date:
                      type: string
                      format: datetime
-                     example: "2025-11-15 23:23:12"
+                     example: "2025-11-15 07:23 PM"
                   status:
                      type: string
                      enum:
@@ -1212,11 +1305,10 @@ paths:
                        - Completed
                        - Cancelled
                      example: Booked   
-
-        '404':
-          description: Doctor not found
         '500':
           description: Internal Server Error
+        '404':
+          description: Appointment not found
         '400':
           description: Bad request
           content:
