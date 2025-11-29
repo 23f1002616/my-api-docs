@@ -5,12 +5,16 @@ info:
     <div>I am required to build a Flask based Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
     <h3><strong> Pakages Used: </strong></h3>
     <ol> 
-      <li>Flask</li>
-      <li>Flask-Sqlalchemy</li>
-      <li>Flask-Restful</li>
-      <li>Flask-Login</li>
-      <li>python-dotenv</li>
-      <li>Flask-Migrate</li> 
+      <li>Flask: Core backend web framework</li>
+      <li>SQLAlchemy: Object Relational Mapper for SQLite database</li>
+      <li>Flask-Restful: To build clean and structured REST APIs</li>
+      <li>Flask-Login: User authentication and session management</li>
+      <li>python-dotenv: To load the environment variables from the .env file</li>
+      <li>Flask-Migrate: To manage database schema changes without losing data</li> 
+      <li>jinja2: Template engine for rendering dynamic HTML pages</li>
+      <li>Bootstrap 5: Frontend styling and responsive design</li>
+      <li>Chart.js: To visualize trends such as no. of appointments Completed, Booked and cancelled</li>
+      <li>SQLite: Lightweight local database for storing user data</li>
     </ol>
     </div>
     <br>
