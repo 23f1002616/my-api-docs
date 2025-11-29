@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Hospital Management System Problem Statement
   description: >
-    <div>I build a Flask based Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
+    <div>I built a Flask based Hospital Management System (HMS) web application that allows Admins, Doctors, and Patients to interact with the system based on their roles.
     <h3><strong> Pakages Used: </strong></h3>
     <ol> 
       <li><strong>Flask:</strong> Core backend web framework</li>
